@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:projetocomponentesflutter/src/providers/menu_provider.dart';
 
 class HomePage extends StatelessWidget {
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,19 +13,44 @@ class HomePage extends StatelessWidget {
 
   Widget _lista() {
 
-    print( menuProvider.opcoes);
-    return ListView(children: _listaItems());
+    return FutureBuilder( 
+      future: menuProvider.cargarData(),
+      initialData: [],
+      builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot){
+
+        return ListView(children: _listaItems(snapshot.data));
+      },
+    );
+
   }
 
-  List<Widget>_listaItems() {
+    //print( menuProvider.opcoes);
+    // menuProvider.cargarData().then((opcoes){
 
-    return[
-      ListTile(title: Text('Ola')),
-      Divider(),
-      ListTile(title: Text('Ola')),
-      Divider(),
-      ListTile(title: Text('Ola')),
-      
-    ];
+    //   print('_lista');
+    //   print(opcoes);
+    //return ListView(children: _listaItems());
+
+
+  List<Widget>_listaItems(List<dynamic> data) {
+
+   final List<Widget> opcoes = [];
+   data.forEach((opt){
+     
+     final widgetTemp = ListTile(
+       title: Text(opt['texto']),
+       leading: Icon(Icons.account_circle, color: Colors.blue),
+       trailing: Icon(Icons.keyboard_arrow_right, color: Colors.blue),
+       onTap: (){
+
+       },
+     );
+
+     opcoes..add(widgetTemp)
+           ..add(Divider());
+   });
+
+   return opcoes;
+
   }
 }
