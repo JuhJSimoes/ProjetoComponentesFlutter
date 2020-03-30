@@ -13,6 +13,6 @@ Map<String, WidgetBuilder> getApplicationRoutes() {
     'avatar'            : (BuildContext context) => AvatarPage(),
     'card'              : (BuildContext context) => CardPage(),
     'animationContainer': (BuildContext context) => AnimationContainerPage(),
-    'input'              : (BuildContext context) => InputPage(),
+    'inputs'              : (BuildContext context) => InputPage(),
   };
 }
