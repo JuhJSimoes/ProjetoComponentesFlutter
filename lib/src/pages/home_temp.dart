@@ -17,22 +17,22 @@ class HomePageTemp extends StatelessWidget {
     );
   }
 
-  List <Widget> _criarItens(){
+  // List <Widget> _criarItens(){
 
-    List<Widget> lista = new List<Widget>();
+  //   List<Widget> lista = new List<Widget>();
 
-    for (String opt in opcoes) {
+  //   for (String opt in opcoes) {
       
-      final tempWidget = ListTile(
-        title: Text(opt),
-      );
+  //     final tempWidget = ListTile(
+  //       title: Text(opt),
+  //     );
 
-      lista..add(tempWidget)
-           ..add(Divider());
+  //     lista..add(tempWidget)
+  //          ..add(Divider());
       
-    }    
-    return lista;
-  }
+  //   }    
+  //   return lista;
+  // }
 
 
   List<Widget> _criarItensCurtos(){
