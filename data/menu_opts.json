@@ -1,0 +1,20 @@
+{
+    "nomeApp" : "Componentes",
+    "rotas" : [
+        {
+            "rota" : "alert",
+            "icon" : "add_alert",
+            "texto": "Alertas"
+        },
+        {
+            "rota" : "avatar",
+            "icon" : "accessibility",
+            "texto": "Avatars"
+        },
+        {
+            "rota" : "card",
+            "icon" : "folder_open",
+            "texto": "Cards - Tarjetas"
+        }
+    ]
+}
