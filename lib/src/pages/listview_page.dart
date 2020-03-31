@@ -30,28 +30,52 @@ class _ListaPageState extends State<ListaPage> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Listas'),
-      ),
-      body: _criarLista(),
-    );
+        appBar: AppBar(
+          title: Text('Listas'),
+        ),
+        body: Stack(
+          children: <Widget>[
+            _criarLista(),
+            _criarLoading(),
+          ],
+        ));
   }
 
   Widget _criarLista() {
-    return ListView.builder(
-      controller: _scrollController,
-      itemCount: _listaNumeros.length,
-      itemBuilder: (BuildContext context, int index) {
-        final imagem = _listaNumeros[index];
-        return FadeInImage(
-          image: NetworkImage('https://i.picsum.photos/id/$imagem/500/300.jpg'),
-          placeholder: AssetImage('assets/original.gif'),
-        );
-      },
+    return RefreshIndicator(
+
+        onRefresh: obterPagina1,
+        child: ListView.builder(
+        controller: _scrollController,
+        itemCount: _listaNumeros.length,
+        itemBuilder: (BuildContext context, int index) {
+          final imagem = _listaNumeros[index];
+          return FadeInImage(
+            image: NetworkImage('https://i.picsum.photos/id/$imagem/500/300.jpg'),
+            placeholder: AssetImage('assets/original.gif'),
+          );
+        },
+      ),
     );
   }
+
+Future<Null> obterPagina1() async{
+  final duration = new Duration(seconds: 2);
+  new Timer(duration, (){
+    _listaNumeros.clear();
+    _ultimoNumero++;
+    _agregar10();
+  });
+  return Future.delayed(duration);
+}
 
   void _agregar10() {
     for (var i = 0; i < 10; i++) {
@@ -66,7 +90,6 @@ class _ListaPageState extends State<ListaPage> {
     _isLoading = true;
     setState(() {});
 
-
     final duration = new Duration(seconds: 2);
     return new Timer(duration, repostaHTTP);
   }
@@ -74,6 +97,33 @@ class _ListaPageState extends State<ListaPage> {
   void repostaHTTP() {
     _isLoading = false;
 
+    _scrollController.animateTo(
+      _scrollController.position.pixels + 100,
+      curve: Curves.fastOutSlowIn,
+      duration: Duration(milliseconds: 250)
+      );
+
     _agregar10();
+  }
+
+  Widget _criarLoading() {
+
+   if (_isLoading) {
+      return Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              CircularProgressIndicator()     
+            ],
+          ),
+          SizedBox(height: 15.0,)
+        ],
+      );
+   } else {
+     return Container();
+   }
   }
 }
