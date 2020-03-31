@@ -31,6 +31,12 @@
             "rota" : "slider",
             "icon" : "tune",
             "texto": "Slider"
+        },
+
+        {
+            "rota" : "list",
+            "icon" : "list",
+            "texto": "List"
         }
 
         
