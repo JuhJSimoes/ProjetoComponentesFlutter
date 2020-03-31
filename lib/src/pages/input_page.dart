@@ -8,6 +8,9 @@ class InputPage extends StatefulWidget {
 class _InputPageState extends State<InputPage> {
   String _nome = '';
   String _email = '';
+  String _data = '';
+
+  TextEditingController _inputFieldDateController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -20,15 +23,16 @@ class _InputPageState extends State<InputPage> {
           Divider(),
           _criarEmail(),
           Divider(),
+          _criarPassword(),
+          Divider(),
+          _criarData(context),
+          Divider(),
           _criarPersona(),
         ],
       ),
     );
   }
 
-
-  
- 
   Widget _criarInput() {
     return TextField(
       //autofocus: true,
@@ -51,29 +55,102 @@ class _InputPageState extends State<InputPage> {
   }
 
   Widget _criarEmail() {
-
     return TextField(
-     keyboardType: TextInputType.emailAddress,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
-        hintText: 'Email da pessoa',
-        labelText: 'Email',
-        suffixIcon: Icon(Icons.alternate_email),
-        icon: Icon(Icons.email),
-      ),
-      onChanged: (valor) => setState(() {
-          _email = valor;
-        })
-    );
-
-
-
-
-
-
-   Widget _criarPersona() {
-    return ListTile(
-      title: Text('Nome é: $_nome'),
-    );
+        keyboardType: TextInputType.emailAddress,
+        decoration: InputDecoration(
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+          hintText: 'Email da pessoa',
+          labelText: 'Email',
+          suffixIcon: Icon(Icons.alternate_email),
+          icon: Icon(Icons.email),
+        ),
+        onChanged: (valor) => setState(() {
+              _email = valor;
+            }));
   }
+
+  Widget _criarPassword() {
+    return TextField(
+        obscureText: true,
+        decoration: InputDecoration(
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+          hintText: 'Password',
+          labelText: 'Password',
+          suffixIcon: Icon(Icons.lock_open),
+          icon: Icon(Icons.lock),
+        ),
+        onChanged: (valor) => setState(() {
+              _email = valor;
+            }));
+  }
+
+
+  Widget _criarData(BuildContext context) {
+    
+    return TextField(
+        enableInteractiveSelection: false,
+        controller: _inputFieldDateController,
+        decoration: InputDecoration(
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+          hintText: 'Data de nascimento',
+          labelText: 'Data de nascimento',
+          suffixIcon: Icon(Icons.perm_contact_calendar),
+          icon: Icon(Icons.calendar_today),
+        ),
+        onTap: (){
+          FocusScope.of(context).requestFocus(new FocusNode());
+          _selectDate(context);
+                  },
+              );
+          
+            }
+           
+   _selectDate(BuildContext context) async{
+     DateTime picked = await showDatePicker(
+       context: context, 
+       initialDate: new DateTime.now(), 
+       firstDate: new DateTime(1987), 
+       lastDate: new DateTime(2021),
+       locale: Locale('pt', 'PT'),
+      );
+
+      if (picked != null) {
+
+        setState(() {
+          _data = picked.toString();
+          _inputFieldDateController.text = _data;
+        });
+        
+      }
+   } 
+           
+           
+           
+           
+           
+           
+           
+           
+           
+           
+           
+           
+           
+           
+           
+           
+           
+           
+           
+           
+           
+           
+            Widget _criarPersona() {
+              return ListTile(
+                title: Text('Nome é: $_nome'),
+                subtitle: Text('Email: $_email'),
+              );
+            }
+          
+            
 }
