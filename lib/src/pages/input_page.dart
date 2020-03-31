@@ -10,6 +10,10 @@ class _InputPageState extends State<InputPage> {
   String _email = '';
   String _data = '';
 
+  String _opcaoSelecionada = 'Voar';
+
+  List<String> _poderes = ['Voar', 'Raio - X', 'Super Sopro', 'Super Força'];
+
   TextEditingController _inputFieldDateController = new TextEditingController();
 
   @override
@@ -26,6 +30,8 @@ class _InputPageState extends State<InputPage> {
           _criarPassword(),
           Divider(),
           _criarData(context),
+          Divider(),
+          _criarDropDown(),
           Divider(),
           _criarPersona(),
         ],
@@ -84,73 +90,82 @@ class _InputPageState extends State<InputPage> {
             }));
   }
 
-
   Widget _criarData(BuildContext context) {
-    
     return TextField(
-        enableInteractiveSelection: false,
-        controller: _inputFieldDateController,
-        decoration: InputDecoration(
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
-          hintText: 'Data de nascimento',
-          labelText: 'Data de nascimento',
-          suffixIcon: Icon(Icons.perm_contact_calendar),
-          icon: Icon(Icons.calendar_today),
-        ),
-        onTap: (){
-          FocusScope.of(context).requestFocus(new FocusNode());
-          _selectDate(context);
-                  },
-              );
-          
-            }
-           
-   _selectDate(BuildContext context) async{
-     DateTime picked = await showDatePicker(
-       context: context, 
-       initialDate: new DateTime.now(), 
-       firstDate: new DateTime(1987), 
-       lastDate: new DateTime(2021),
-       locale: Locale('pt', 'PT'),
-      );
+      enableInteractiveSelection: false,
+      controller: _inputFieldDateController,
+      decoration: InputDecoration(
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+        hintText: 'Data de nascimento',
+        labelText: 'Data de nascimento',
+        suffixIcon: Icon(Icons.perm_contact_calendar),
+        icon: Icon(Icons.calendar_today),
+      ),
+      onTap: () {
+        FocusScope.of(context).requestFocus(new FocusNode());
+        _selectDate(context);
+      },
+    );
+  }
 
-      if (picked != null) {
+  _selectDate(BuildContext context) async {
+    DateTime picked = await showDatePicker(
+      context: context,
+      initialDate: new DateTime.now(),
+      firstDate: new DateTime(1987),
+      lastDate: new DateTime(2021),
+      locale: Locale('pt', 'PT'),
+    );
 
-        setState(() {
-          _data = picked.toString();
-          _inputFieldDateController.text = _data;
-        });
-        
-      }
-   } 
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-            Widget _criarPersona() {
-              return ListTile(
-                title: Text('Nome é: $_nome'),
-                subtitle: Text('Email: $_email'),
-              );
-            }
-          
-            
+    if (picked != null) {
+      setState(() {
+        _data = picked.toString();
+        _inputFieldDateController.text = _data;
+      });
+    }
+  }
+
+  List<DropdownMenuItem<String>> getOpcoesDropDown() {
+    List<DropdownMenuItem<String>> lista = new List();
+    _poderes.forEach((poder) {
+      lista.add(DropdownMenuItem(
+        child: Text(poder),
+        value: poder,
+      ));
+    });
+
+    return lista;
+  }
+
+  Widget _criarDropDown() {
+    return Row(
+      children: <Widget>[
+        Icon(Icons.select_all),
+        SizedBox(width: 30.0,),
+        Expanded(
+            child: DropdownButton(
+            value: _opcaoSelecionada,
+            items: getOpcoesDropDown(),
+            onChanged: (opt) {
+              setState(() {
+                _opcaoSelecionada = opt;
+              });
+            },
+          ),
+        )
+      ],
+    );
+  }
+
+
+
+
+
+  Widget _criarPersona() {
+    return ListTile(
+      title: Text('Nome é: $_nome'),
+      subtitle: Text('Email: $_email'),
+      trailing: Text(_opcaoSelecionada),
+    );
+  }
 }
