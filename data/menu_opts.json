@@ -25,6 +25,14 @@
             "rota" : "inputs",
             "icon" : "input",
             "texto": "Inputs"
+        },
+
+        {
+            "rota" : "slider",
+            "icon" : "tune",
+            "texto": "Slider"
         }
+
+        
     ]
 }
